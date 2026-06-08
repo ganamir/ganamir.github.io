@@ -132,12 +132,12 @@ function drawVisibleRow(rowData, canvasY, globalAlpha) {
 
     if (colIndex === 4) {
       const af = parseFloat(val);
-      const barWidth = 55 * af;
+      const barWidth = 50 * af;
       ctx.fillStyle = `rgba(120,255,150,${0.1 * alpha})`;
       ctx.fillRect(x, canvasY - 11, barWidth, 14);
       ctx.font = `${FONT_SIZE}px monospace`;
       ctx.fillStyle = `rgba(120,255,150,${0.75 * alpha})`;
-      ctx.fillText(val, x + 60, canvasY);
+      ctx.fillText(val, x, canvasY);
       return;
     }
 

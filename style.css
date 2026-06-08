@@ -75,6 +75,57 @@ main {
   border-radius: 3px;
   opacity: 1;
 }
+
+.hero-bullets {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.hero-bullets li {
+  font-size: 0.9rem;
+  opacity: 0.6;
+  line-height: 1.5;
+  padding-left: 16px;
+  position: relative;
+}
+
+.hero-bullets li::before {
+  content: '—';
+  position: absolute;
+  left: 0;
+  opacity: 0.4;
+}
+
+.facts-label {
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  opacity: 0.3;
+  margin-top: 28px;
+  margin-bottom: 12px;
+  font-family: Georgia, serif;
+}
+
+.contact-line {
+  font-size: 0.82rem;
+  opacity: 0.5;
+  margin-top: 12px;
+  margin-bottom: 4px;
+}
+
+.contact-line a {
+  color: #f0f0f0;
+  text-decoration: none;
+  opacity: 1;
+}
+
+.contact-line a:hover {
+  opacity: 0.6;
+}
+
 .logo {
   font-size: 1.2rem;
   letter-spacing: 0.1em;
