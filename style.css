@@ -169,13 +169,62 @@ a:hover {
   flex: 1;
 }
 
+.nav-links {
+  display: flex;
+  gap: 32px;
+  align-items: center;
+}
+
+.nav-links a {
+  font-size: 0.8rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  opacity: 0.4;
+  transition: opacity 0.2s;
+}
+
+.nav-links a:hover {
+  opacity: 1;
+}
+
+.hero-main {
+  display: flex;
+  align-items: center;
+  gap: 48px;
+  width: 100%;
+}
+
+.nav-inline {
+  font-size: 0.85rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.7;
+  margin-left: 24px;
+  transition: opacity 0.2s;
+  vertical-align: middle;
+  font-weight: 600;
+}
+
+.nav-inline:hover {
+  opacity: 1;
+}
+
 .hero-text {
-  margin-bottom: 32px;
+  flex: 1;
+  margin-bottom: 0;
+}
+
+.hero-main .img-wrapper {
+  flex-shrink: 0;
+  width: auto;
+  display: flex;
+  justify-content: center;
 }
 
 .hero-img {
-  height: 300px;
+  height: 380px;
   object-fit: contain;
+  transform: scaleX(-1);
 }
 
 .divider {
@@ -364,6 +413,16 @@ canvas#bg {
     font-size: 12px;
     margin-top: 8px;
   }
+
+
+  .nav-links {
+    gap: 16px;
+  }
+  
+  .nav-links a {
+    font-size: 0.7rem;
+  }
+}
 
   .matrix-mobile-header {
     display: grid;
