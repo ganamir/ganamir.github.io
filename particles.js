@@ -1,45 +1,44 @@
+(function() {
+
 const canvas = document.getElementById('bg');
 const ctx = canvas.getContext('2d');
+const dpr = window.devicePixelRatio || 1;
 
 let mouse = { x: null, y: null };
 let particles = [];
 const COUNT = 40;
 const MOBILE_COUNT = 15;
-const actualCount = window.innerWidth < 768 ? MOBILE_COUNT : COUNT;
 const MAX_DIST = 130;
 const MOUSE_DIST = 150;
 
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
+function resize() {
+  const w = window.innerWidth;
+  const h = window.innerHeight;
+  canvas.width = w * dpr;
+  canvas.height = h * dpr;
+  canvas.style.width = w + 'px';
+  canvas.style.height = h + 'px';
+  ctx.scale(dpr, dpr);
+}
+resize();
+window.addEventListener('resize', resize);
 
-window.addEventListener('resize', () => {
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-});
-
-window.addEventListener('mousemove', e => {
-  mouse.x = e.clientX;
-  mouse.y = e.clientY;
-});
-
-window.addEventListener('mouseleave', () => {
-  mouse.x = null;
-  mouse.y = null;
-});
+window.addEventListener('mousemove', e => { mouse.x = e.clientX; mouse.y = e.clientY; });
+window.addEventListener('mouseleave', () => { mouse.x = null; mouse.y = null; });
 
 const BASE_COLORS = [
-  'rgba(100, 200, 255, ',  // A - blue
-  'rgba(255, 120, 120, ',  // T - red
-  'rgba(120, 255, 150, ',  // G - green
-  'rgba(255, 210, 80, ',   // C - yellow
+  'rgba(100, 200, 255, ',
+  'rgba(255, 120, 120, ',
+  'rgba(120, 255, 150, ',
+  'rgba(255, 210, 80, ',
 ];
 
 class DNAFragment {
   constructor() { this.reset(); }
 
   reset() {
-    this.x = Math.random() * canvas.width;
-    this.y = Math.random() * canvas.height;
+    this.x = Math.random() * window.innerWidth;
+    this.y = Math.random() * window.innerHeight;
     this.vx = (Math.random() - 0.5) * 0.3;
     this.vy = (Math.random() - 0.5) * 0.3;
     this.angle = Math.random() * Math.PI * 2;
@@ -62,15 +61,13 @@ class DNAFragment {
         this.vy -= (dy / dist) * force * 0.9;
       }
     }
-
     this.vx *= 0.98;
     this.vy *= 0.98;
     this.x += this.vx;
     this.y += this.vy;
     this.angle += this.rotSpeed;
-
-    if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
-    if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
+    if (this.x < 0 || this.x > window.innerWidth) this.vx *= -1;
+    if (this.y < 0 || this.y > window.innerHeight) this.vy *= -1;
   }
 
   draw() {
@@ -79,34 +76,29 @@ class DNAFragment {
     const bx = this.x - Math.cos(this.angle) * this.length;
     const by = this.y - Math.sin(this.angle) * this.length;
 
-    // connecting line (base pair bond)
     ctx.beginPath();
     ctx.moveTo(ax, ay);
     ctx.lineTo(bx, by);
-    ctx.strokeStyle = `rgba(240, 240, 240, ${this.opacity * 0.3})`;
+    ctx.strokeStyle = `rgba(240,240,240,${this.opacity * 0.3})`;
     ctx.lineWidth = 0.8;
     ctx.stroke();
 
-    // tick marks along the bond (like rungs)
     const midX = (ax + bx) / 2;
     const midY = (ay + by) / 2;
     const perpX = -Math.sin(this.angle) * 4;
     const perpY = Math.cos(this.angle) * 4;
-
     ctx.beginPath();
     ctx.moveTo(midX - perpX, midY - perpY);
     ctx.lineTo(midX + perpX, midY + perpY);
-    ctx.strokeStyle = `rgba(240, 240, 240, ${this.opacity * 0.2})`;
+    ctx.strokeStyle = `rgba(240,240,240,${this.opacity * 0.2})`;
     ctx.lineWidth = 0.5;
     ctx.stroke();
 
-    // base A dot
     ctx.beginPath();
     ctx.arc(ax, ay, this.dotRadius, 0, Math.PI * 2);
     ctx.fillStyle = `${this.colorA}${this.opacity})`;
     ctx.fill();
 
-    // base B dot
     ctx.beginPath();
     ctx.arc(bx, by, this.dotRadius, 0, Math.PI * 2);
     ctx.fillStyle = `${this.colorB}${this.opacity})`;
@@ -125,7 +117,7 @@ function drawConnections() {
         ctx.beginPath();
         ctx.moveTo(particles[i].x, particles[i].y);
         ctx.lineTo(particles[j].x, particles[j].y);
-        ctx.strokeStyle = `rgba(240, 240, 240, ${opacity})`;
+        ctx.strokeStyle = `rgba(240,240,240,${opacity})`;
         ctx.lineWidth = 0.4;
         ctx.stroke();
       }
@@ -133,13 +125,15 @@ function drawConnections() {
   }
 }
 
+const actualCount = window.innerWidth < 768 ? MOBILE_COUNT : COUNT;
 for (let i = 0; i < actualCount; i++) particles.push(new DNAFragment());
 
 function animate() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
   particles.forEach(p => { p.update(); p.draw(); });
   drawConnections();
   requestAnimationFrame(animate);
 }
-
 animate();
+
+})();
